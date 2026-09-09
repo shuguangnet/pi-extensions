@@ -12,6 +12,7 @@
 | [sensitive-op-guard](./plugins/sensitive-op-guard) | 读取敏感文件 / 删除操作前的确认门禁 | `plugins/sensitive-op-guard/` |
 | [conventional-commit](./plugins/conventional-commit) | Conventional Commits 交互式提交 + 消息格式校验 | `plugins/conventional-commit/` |
 | [dirty-repo-guard](./plugins/dirty-repo-guard) | 切换/新建/fork 会话前检测未提交改动并提醒 | `plugins/dirty-repo-guard/` |
+| [session-manager](./plugins/session-manager) | 自动命名会话 + 上下文占用阈值提醒 /compact | `plugins/session-manager/` |
 
 ## 安装
 
