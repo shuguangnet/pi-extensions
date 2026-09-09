@@ -77,9 +77,10 @@ function buildPiArgs(opts) {
   const args = ["--print"];
   if (opts.sessionId) {
     args.push("--session-id", String(opts.sessionId));
-  } else {
+  } else if (opts.noSession) {
     args.push("--no-session");
   }
+  // 默认都不传：保存会话，便于在 pi 会话选择器中回溯 / 续聊
   if (opts.name) args.push("--name", String(opts.name));
   if (opts.provider) args.push("--provider", String(opts.provider));
   const model = opts.model || DEFAULT_MODEL;
@@ -199,7 +200,8 @@ const TASK_ARGS = {
     model: { type: "string", description: `模型，支持 "provider/model" 或模糊匹配，如 "opencode-go/kimi-k2.7-code"。默认: ${DEFAULT_MODEL || "pi 自身默认配置"}` },
     provider: { type: "string", description: "可选，显式指定 provider 名" },
     thinking: { type: "string", enum: ["off", "minimal", "low", "medium", "high", "xhigh", "max"], description: "思考强度（仅对支持 thinking 的模型生效）" },
-    session_id: { type: "string", description: "可选，复用/创建一个命名会话实现多轮委派；不传则一次性执行不留存会话" },
+    session_id: { type: "string", description: "可选，指定会话 ID：已存在则续聊（多轮委派），不存在则创建。不传则自动创建新会话" },
+    no_session: { type: "boolean", description: "为 true 时不保存会话（--no-session）。默认保存会话，便于在 pi 会话选择器中回溯" },
     name: { type: "string", description: "可选，会话显示名（仅创建新会话时有意义）" },
     append_system_prompt: { type: "string", description: "可选，追加到 pi 系统提示词的内容（约束其行为）" },
     no_extensions: { type: "boolean", description: "为 true 时不加载 pi 的扩展（更快、更干净，默认 false）" },
@@ -255,7 +257,16 @@ const TOOLS = [
 function parseTaskArgs(raw) {
   if (!raw || typeof raw !== "object") throw new Error("缺少参数对象");
   if (typeof raw.prompt !== "string" || !raw.prompt.trim()) throw new Error("prompt 不能为空");
-  return raw;
+  // 规范化：工具 schema 用 snake_case，内部统一 camelCase
+  return {
+    ...raw,
+    sessionId: raw.session_id ?? raw.sessionId,
+    noSession: raw.no_session ?? raw.noSession ?? false,
+    noExtensions: raw.no_extensions ?? raw.noExtensions ?? false,
+    trustProject: raw.trust_project ?? raw.trustProject,
+    appendSystemPrompt: raw.append_system_prompt ?? raw.appendSystemPrompt,
+    timeoutMs: raw.timeout_ms ?? raw.timeoutMs,
+  };
 }
 
 async function callTool(name, args) {
@@ -301,7 +312,7 @@ function waitFor(task, ms) {
 // JSON-RPC / MCP 协议层
 // ---------------------------------------------------------------------------
 
-const SERVER_INFO = { name: "pi-delegate", version: "0.1.0" };
+const SERVER_INFO = { name: "pi-delegate", version: "0.2.0" };
 
 function handleRequest(msg) {
   const { id, method, params } = msg;

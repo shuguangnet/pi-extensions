@@ -33,7 +33,7 @@ PI_DELEGATE_MODEL = "9779/gpt-5.6-sol"   # pi 默认模型当前 404，建议显
 
 ### 参数（start / dispatch 共用）
 
-`prompt`（必填）、`cwd`、`model`、`provider`、`thinking`、`session_id`（多轮委派）、`name`、`append_system_prompt`、`no_extensions`、`trust_project`（默认 true → `--approve`）
+`prompt`（必填）、`cwd`、`model`、`provider`、`thinking`、`session_id`（多轮委派）、`no_session`（默认 false：保留会话，pi 会话选择器可回溯）、`name`、`append_system_prompt`、`no_extensions`、`trust_project`（默认 true → `--approve`）
 
 ### 环境变量
 

@@ -16,18 +16,20 @@ description: 把完整任务委派给 pi 编码代理 headless 执行并取回�
    - `opencode-go/kimi-k2.7-code`（长上下文，适合大任务）
    - `deepseek/deepseek-v4-pro`
 
-## 基本用法（一次性任务）
+## 基本用法
 
 ```bash
-cd <项目目录> && pi -p --no-session --approve --model <模型> "<任务描述>"
+cd <项目目录> && pi -p --approve --model <模型> "<任务描述>"
 ```
+
+默认**保留会话**：会写入项目会话记录，pi 会话选择器可见、可回溯 / 续聊（装了 session-manager 扩展时会自动命名）。
 
 | 参数 | 说明 |
 |---|---|
 | `-p` | headless：执行完输出最终回复并退出 |
-| `--no-session` | 不留会话（一次性任务用） |
 | `--approve` | 信任项目本地配置（AGENTS.md / .pi/） |
 | `--model` | 模型，必填（见上） |
+| `--no-session` | 可选，不留会话（默认会保存会话） |
 | `--no-extensions` | 可选，跳过 pi 扩展加载，更快更干净 |
 
 退出码 0 = 成功；非 0 时错误信息在 stderr。stdout 很长时先重定向到文件再用 `tail -c 4000` 查看，避免刷屏。
@@ -38,7 +40,7 @@ cd <项目目录> && pi -p --no-session --approve --model <模型> "<任务描�
 
 ```bash
 cd <项目目录>
-nohup pi -p --no-session --approve --model <模型> "<任务描述>" \
+nohup pi -p --approve --model <模型> "<任务描述>" \
   > /tmp/pi-task-<标识>.out 2> /tmp/pi-task-<标识>.err &
 echo $!   # 记下 PID
 ```
@@ -57,11 +59,11 @@ pi -p --session-id "$SID" --approve --model <模型> "第一轮：……"
 pi -p --session-id "$SID" --approve --model <模型> "第二轮：基于刚才的改动……"
 ```
 
-第一轮不要加 `--no-session`，否则会话不存在。全部结束后可无视该会话，或用 pi 会话选择器清理。
+不指定 `--session-id` 时每次调用各自生成新会话；同一 SID 的调用共享上下文（跨调用续聊）。
 
 ## 并行派发
 
-相互独立的子任务可同时启动多个 pi 进程（每个必须：独立 prompt、独立输出文件、不同 `--session-id` 或 `--no-session`）。注意：同一目录并行改代码可能冲突，并行任务应分属不同目录或互不重叠的文件集。
+相互独立的子任务可同时启动多个 pi 进程（每个必须：独立 prompt、独立输出文件）。并行任务间如需隔离会话，各自指定不同的 `--session-id`。注意：同一目录并行改代码可能冲突，并行任务应分属不同目录或互不重叠的文件集。
 
 ## 何时不要委派
 
