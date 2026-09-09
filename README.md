@@ -14,6 +14,20 @@
 | [dirty-repo-guard](./plugins/dirty-repo-guard) | 切换/新建/fork 会话前检测未提交改动并提醒 | `plugins/dirty-repo-guard/` |
 | [session-manager](./plugins/session-manager) | 自动命名会话 + 上下文占用阈值提醒 /compact | `plugins/session-manager/` |
 | [openspec-tracker](./plugins/openspec-tracker) | 提醒已实现但未归档的 OpenSpec 变更 | `plugins/openspec-tracker/` |
+| [pi-delegate](./plugins/pi-delegate) | MCP server：供 Codex 等外部 agent 把任务委派给 pi headless 执行（日常推荐用 skill 版，见下） | `plugins/pi-delegate/` |
+
+## Skills
+
+| Skill | 说明 | 目录 |
+|---|---|---|
+| [pi-delegate](./skills/pi-delegate) | 教 Codex 等 shell 型 agent 用 `pi -p` headless 委派任务（长任务后台、多轮会话、并行派发） | `skills/pi-delegate/` |
+
+Skill 安装（软链到对应 agent 的 skills 目录）：
+
+```bash
+ln -sfn "$HOME/pi-extensions/skills/pi-delegate" ~/.codex/skills/pi-delegate   # Codex
+# 也可链接到 ~/.agents/skills/ 供其他 agent 使用
+```
 
 ## 安装
 
@@ -55,9 +69,12 @@ pi-extensions/
 ├── README.md
 ├── package.json            # 仅用于本地类型提示 / 开发，不参与运行时
 ├── tsconfig.json
-└── plugins/
-    └── sensitive-op-guard/
-        ├── index.ts        # 扩展入口
-        ├── config.ts       # 可编辑的正则/开关
-        └── README.md
+├── plugins/
+│   └── <plugin>/
+│       ├── index.ts        # 扩展入口（pi extension 形式的插件）
+│       ├── config.ts       # 可编辑的正则/开关
+│       └── README.md
+└── skills/                 # 给 shell 型 agent（Codex 等）用的技能
+    └── pi-delegate/
+        └── SKILL.md
 ```
