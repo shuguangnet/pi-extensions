@@ -13,6 +13,7 @@
 | [conventional-commit](./plugins/conventional-commit) | Conventional Commits 交互式提交 + 消息格式校验 | `plugins/conventional-commit/` |
 | [dirty-repo-guard](./plugins/dirty-repo-guard) | 切换/新建/fork 会话前检测未提交改动并提醒 | `plugins/dirty-repo-guard/` |
 | [session-manager](./plugins/session-manager) | 自动命名会话 + 上下文占用阈值提醒 /compact | `plugins/session-manager/` |
+| [openspec-tracker](./plugins/openspec-tracker) | 提醒已实现但未归档的 OpenSpec 变更 | `plugins/openspec-tracker/` |
 
 ## 安装
 
