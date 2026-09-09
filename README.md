@@ -10,6 +10,7 @@
 | 插件 | 说明 | 目录 |
 |---|---|---|
 | [sensitive-op-guard](./plugins/sensitive-op-guard) | 读取敏感文件 / 删除操作前的确认门禁 | `plugins/sensitive-op-guard/` |
+| [conventional-commit](./plugins/conventional-commit) | Conventional Commits 交互式提交 + 消息格式校验 | `plugins/conventional-commit/` |
 
 ## 安装
 
