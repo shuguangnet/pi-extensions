@@ -21,6 +21,7 @@
 | Skill | 说明 | 目录 |
 |---|---|---|
 | [pi-delegate](./skills/pi-delegate) | 教 Codex 等 shell 型 agent 用 `pi -p` headless 委派任务（长任务后台、多轮会话、并行派发） | `skills/pi-delegate/` |
+| [conversation-title-standardizer](./skills/conversation-title-standardizer) | 按上海时区创建日期和实际内容规范化 Codex 对话标题，支持历史批量改名与新对话自动命名 | `skills/conversation-title-standardizer/` |
 
 Skill 安装（软链到对应 agent 的 skills 目录）：
 
