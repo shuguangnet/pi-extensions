@@ -27,6 +27,7 @@
 |---|---|---|
 | [pi-delegate](./skills/pi-delegate) | 教 Codex 等 shell 型 agent 用 `pi -p` headless 委派任务（长任务后台、多轮会话、并行派发） | `skills/pi-delegate/` |
 | [conversation-title-standardizer](./skills/conversation-title-standardizer) | 按上海时区创建日期和实际内容规范化 Codex 对话标题，支持历史批量改名与新对话自动命名 | `skills/conversation-title-standardizer/` |
+| [cloudssh-ssh-config](./skills/cloudssh-ssh-config) | 把 cloudssh 面板的主机列表批量导入 `~/.ssh/config`（统一私钥、幂等维护、并行验证连通），并诊断 `invalid format` / `Permission denied` 类故障 | `skills/cloudssh-ssh-config/` |
 
 Skill 安装（软链到对应 agent 的 skills 目录）：
 
@@ -81,9 +82,12 @@ pi-extensions/
 │       ├── index.ts        # 扩展入口（pi extension 形式的插件）
 │       ├── config.ts       # 可编辑的正则/开关
 │       └── README.md
-└── skills/                 # 给 shell 型 agent（Codex 等）用的技能
-    └── pi-delegate/
-        └── SKILL.md
+└── skills/                 # 给 agent 用的技能（SKILL.md 必需，可附 scripts/ 等）
+    ├── pi-delegate/
+    │   └── SKILL.md
+    └── cloudssh-ssh-config/
+        ├── SKILL.md
+        └── scripts/*.py    # 可能需要交叉校验的可执行脚本
 ```
 
 多文件的插件按职责拆同目录模块，例如 `env-header`：`index.ts`（接线） / `config.ts`（默认配置 +
