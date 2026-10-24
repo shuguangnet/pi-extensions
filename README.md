@@ -15,6 +15,11 @@
 | [session-manager](./plugins/session-manager) | 自动命名会话 + 上下文占用阈值提醒 /compact | `plugins/session-manager/` |
 | [openspec-tracker](./plugins/openspec-tracker) | 提醒已实现但未归档的 OpenSpec 变更 | `plugins/openspec-tracker/` |
 | [pi-delegate](./plugins/pi-delegate) | MCP server：供 Codex 等外部 agent 把任务委派给 pi headless 执行（日常推荐用 skill 版，见下） | `plugins/pi-delegate/` |
+| [env-header](./plugins/env-header) | 输入框上方常驻 时间 / 地点 / 天气 + 当前会话概述 | `plugins/env-header/` |
+| [thinking-zh](./plugins/thinking-zh) | 强制思考链用中文（系统提示 + 每轮提醒两层） | `plugins/thinking-zh/` |
+| [workspace-switcher](./plugins/workspace-switcher) | 跨目录切换/恢复会话 + 后台并行对话（`/ws`、`/wsj`） | `plugins/workspace-switcher/` |
+| [queue-highlight](./plugins/queue-highlight) | 排队提示高亮：steering 红 / follow-up 绿（`/qh`） | `plugins/queue-highlight/` |
+| [statusline](./plugins/statusline) | Claude Code 风格底部状态栏：进度条 + 分段着色（`/sl`） | `plugins/statusline/` |
 
 ## Skills
 
@@ -58,10 +63,11 @@ pi -e ~/pi-extensions/plugins/sensitive-op-guard/index.ts
 
 1. 在 `plugins/` 下新建目录，写出 `index.ts`（默认导出 `(pi: ExtensionAPI) => void`）。
 2. 需要自定义配置时，新建同级 `config.ts` 并从 `index.ts` import。
-3. 参考 pi 官方示例与文档：
+3. 需要第三方类型（如 `setTimeout` / `fetch` / `node:fs`）时，`tsconfig.json` 已开 `"types": ["node"]`，`npm install` 后 `npm run typecheck` 可用。
+4. 参考 pi 官方示例与文档：
    - 扩展文档：`@earendil-works/pi-coding-agent/docs/extensions.md`
    - 示例：`@earendil-works/pi-coding-agent/examples/extensions/`
-4. 为插件写一个 README，说明拦截/功能范围与安装方式，并登记到本 README 的表格里。
+5. 为插件写一个 README，说明拦截/功能范围与安装方式，并登记到本 README 的表格里。
 
 ## 目录结构
 
@@ -79,3 +85,7 @@ pi-extensions/
     └── pi-delegate/
         └── SKILL.md
 ```
+
+多文件的插件按职责拆同目录模块，例如 `env-header`：`index.ts`（接线） / `config.ts`（默认配置 +
+读写 + 深合并） / `place.ts`（定位 + 天气数据源） / `summary.ts`（会话概述） / `text.ts`（宽度截断 +
+文案 + 时间格式化）。
