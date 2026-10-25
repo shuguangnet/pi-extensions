@@ -28,6 +28,7 @@
 | [pi-delegate](./skills/pi-delegate) | 教 Codex 等 shell 型 agent 用 `pi -p` headless 委派任务（长任务后台、多轮会话、并行派发） | `skills/pi-delegate/` |
 | [conversation-title-standardizer](./skills/conversation-title-standardizer) | 按上海时区创建日期和实际内容规范化 Codex 对话标题，支持历史批量改名与新对话自动命名 | `skills/conversation-title-standardizer/` |
 | [cloudssh-ssh-config](./skills/cloudssh-ssh-config) | 把 cloudssh 面板的主机列表批量导入 `~/.ssh/config`（统一私钥、幂等维护、并行验证连通），并诊断 `invalid format` / `Permission denied` 类故障 | `skills/cloudssh-ssh-config/` |
+| [inkstone](./skills/inkstone) | 查询、总结和沉淀私有 Inkstone 知识库（md.933999.xyz）：MCP 无状态调用脚本、检索/读取/综合总结、去重写入与乐观锁更新，凭据走 env 或 gitignore 的 `.token` | `skills/inkstone/` |
 
 Skill 安装（软链到对应 agent 的 skills 目录）：
 
@@ -85,9 +86,10 @@ pi-extensions/
 └── skills/                 # 给 agent 用的技能（SKILL.md 必需，可附 scripts/ 等）
     ├── pi-delegate/
     │   └── SKILL.md
-    └── cloudssh-ssh-config/
+    └── inkstone/
         ├── SKILL.md
-        └── scripts/*.py    # 可能需要交叉校验的可执行脚本
+        ├── .gitignore      # 忽略本地 .token 凭据
+        └── scripts/inkstone.sh
 ```
 
 多文件的插件按职责拆同目录模块，例如 `env-header`：`index.ts`（接线） / `config.ts`（默认配置 +
